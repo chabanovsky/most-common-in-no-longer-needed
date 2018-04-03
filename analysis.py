@@ -77,15 +77,11 @@ def parse_file(filename="comments.csv"):
             comments.append((body, processed_text))
     return full_text, comments
 
-
-
 if __name__ == "__main__":
-    n_words = 15
+    n_words = int(input("Please enter number of words: "))
     text, comments = parse_file()
     words_to_check = [word for word in text.split(" ") if len(word.replace(" ", "")) > 0]
     most_common_words = collections.Counter(words_to_check).most_common(n_words)
-    for word, count in most_common_words:
-        print ("%s: %s" % ( str(word), str(count) ))
 
     common_dict = dict()
     for word, _ in most_common_words:
@@ -95,10 +91,20 @@ if __name__ == "__main__":
         for body, process_text in comments:
             if word in process_text:
                 common_dict[word].append(body)
-
-    for word in common_dict:
-        print("# %s" % (word))
+    while True:
+        for word, count in most_common_words:
+            print ("%s: %s" % ( str(word), str(count) ))
+        print("\r\n\r\n")
+        word = str(input("Please enter the word or type quit: "))
+        if word == 'quit':
+            print("Bye-Bye!")
+            break
+        if common_dict.get(word, None) is None:
+            print("Wrong spelling of the word")
+            continue
+        print("-----------------------------------------")
+        print("\r\n\r\n")
+        print("### %s" % (word))
         for comment in common_dict[word]:
             print("      %s" % (comment))
-
         print("\r\n\r\n")
